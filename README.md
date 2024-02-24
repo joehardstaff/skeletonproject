@@ -11,3 +11,4 @@ Currently, two official plugins are available:
 - download github scm
 - git clone https://github.com/joehardstaff/skeletonproject
 - git pull
+- npm run dev
