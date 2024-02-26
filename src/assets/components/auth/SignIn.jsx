@@ -1,25 +1,25 @@
 import * as React from 'react';
-import{ useState } from 'react';
+import { useState } from 'react';
 import { auth } from '../../../firebase';
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
 import Link from '@mui/material/Link';
-import Grid from '@mui/material/Grid';
+import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
+import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-
-
-// TODO remove, this demo shouldn't need to reset the theme.
+import img1 from '../Logo/NoteForge.jpeg'; //Need this imported in order to bring logo to life
+import { Link as RouterLink } from 'react-router-dom'; //This must be imported in order to link pages together, otherwise this will not work;
+import Alert from '@mui/material/Alert';
+import CheckIcon from '@mui/icons-material/Check';
 
 const defaultTheme = createTheme();
 
-const SignIn = () => {
+// copied this off youtube, still yet to be used, i dont know what it does i dont know how to use it 
+const SignUp = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState(null);
@@ -41,91 +41,158 @@ const SignIn = () => {
   };
 
   return (
-    <ThemeProvider theme={defaultTheme}>
-      <Container component="main" maxWidth="xs">
-      <Box
-          sx={{
-            marginTop: 8,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-          }}
-        >
-          <Box sx={{ border: '1px solid #000', padding: '20px', borderRadius: '10px' }}>
+    <ThemeProvider 
+    theme={defaultTheme}
+    >
+      <Grid 
+      container 
+      component="main" 
+      sx={{ height: '100vh' }}
+      >
         <CssBaseline />
-        <Box
+        {/* This Display the Picture to the left half of the screen, currently using a website hosting it, must change */}
+        <Grid
+          item
+          xs={false}
+          sm={4}
+          md={7}
           sx={{
-            marginTop: 8,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
+            backgroundImage: `url(${img1})`, // Use the imported image as a background
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
           }}
-        >
-          <Typography component="h1" variant="h5">
-            Log in
-          </Typography>
-          <Box component="form" onSubmit={handleSignIn} noValidate sx={{ border: '#FFF', mt: 1 }}>
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              id="email"
-              label="Email Address"
-              name="email"
-              autoComplete="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              autoFocus
-            />
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              name="password"
-              label="Password"
-              type="password"
-              id="password"
-              autoComplete="current-password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-            <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
-              label="Remember me"
-            />
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}
+        />
+
+        {/* This is the left box in its entirety, any modifications to it has to be done within the sx tag */}
+        <Grid 
+        item xs={12} 
+        sm={8} 
+        md={5} 
+        component={Paper} 
+        elevation={6} 
+        sx={{
+            bgcolor: '#2B3336'
+            }}
+        square>
+            {/* Not a fucking clue what this does i just know i need it because the styling goes to shit otherwise */}
+          <Box
+            sx={{
+              my: 8,
+              mx: 4,
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+            }}
+          >
+            {/* This is the top of the page (yes that login) font needs changing but apart from that this is all good to go */}
+            <Typography 
+            component="h2" 
+            variant="h5" 
+            sx={{ 
+                mt: 13,
+                color: '#FFFFFF',
+            }}
             >
-              Log In
-            </Button>
-            {(error || success) && (
-            <Alert icon={<CheckIcon fontSize="inherit" />} severity={error ? "error" : "success"}>
-              {error && <p style={{ color: 'red' }}>{error}</p>} 
-              {success && <p style={{ color: 'green' }}>{success}</p>}
+              Login
+            </Typography>
+            {/* This holds emal box im pretty sure, again the program goes to shit otherwise, so we will go with this  */}
+            <Box 
+            textAlign='center' 
+            component="form" 
+            noValidate 
+            onSubmit={handleSignIn} 
+            sx={{ 
+                mt: 1
+                }}
+            >
+                {/* This makes the email text go white, box black ect ect any modications to the actual text and box must go here cheers future me */}
+              <TextField
+                margin="normal"
+                required
+                fullWidth
+                id="email"
+                label="Email Address"
+                name="email"
+                autoComplete="email"
+                autoFocus
+                variant="filled"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                sx={{ 
+                    mt: 9,
+                    bgcolor: '#272829',
+                    input:{color: '#FFFFFF'},
+                    label:{color: '#FFFFFF'},
+                    borderRadius: '12px',
+                }}
+              />
+              {/* Self explanatory really */}
+              <TextField
+                margin="normal"
+                required
+                fullWidth
+                id="password"
+                label="Password"
+                name="password"
+                autoComplete="password"
+                type="password"
+                variant="filled"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                sx={{ 
+                    bgcolor: '#272829',
+                    mt: 9,
+                    label:{color: '#FFFFFF'},
+                    input:{color: '#FFFFFF'},
+                    borderRadius: '12px',
+                }}
+              />
+              {/* This is the button at the bottom, all sorted i have no issues with it so good stuff all round (i think) */}
+              <Button
+                type="submit"
+                size="md"
+                onClick={function(){}}
+                variant="contained"
+                sx={{ 
+                    mt: 15, 
+                    mb: 2,
+                    bgcolor: '#272829', 
+                    variant:{color:'white'},
+                    width: '250px',
+                    borderRadius: '12px',
+                }}
+              >
+                Login
+              </Button>
+              {(error || success) && (
+            <Alert 
+            icon={<CheckIcon fontSize="inherit" />} 
+            severity={error ? "error" : "success"}>
+            {error && <p style={{ color: 'red' }}>{error}</p>}  
+            {success && <p style={{ color: 'green' }}>{success}</p>}
             </Alert>
           )}
-            <Grid container>
-              <Grid item xs>
-                <Link href="#" variant="body2">
-                  Forgot password?
-                </Link>
+              {/* Bunch of useless shit, will clear when done with the program, fuck you for sortening the deadline */}
+              <Grid container>
+                <Grid item xs>
+                </Grid>
+                <Grid item>
+                </Grid>
               </Grid>
-              <Grid item>
-                <Link href="/SignUp" variant="body2">
-                  {"Don't have an account? Sign Up"}
+              {/* I fucking hate the blue shit, its so ugly jesus christ */}
+              <Link
+                component={RouterLink}
+                to="/"
+                variant="body2"
+              >
+                {"Have an account? LogIn"}
                 </Link>
-              </Grid>
-            </Grid>
+            </Box>
           </Box>
-        </Box>
-        </Box>
-        </Box>
-      </Container>
+        </Grid>
+      </Grid>
     </ThemeProvider>
   );
 }
 
-export default SignIn;
+export default SignUp;
