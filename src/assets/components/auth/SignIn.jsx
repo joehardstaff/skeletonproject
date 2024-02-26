@@ -12,7 +12,7 @@ import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import img1 from '../Logo/NoteForge.jpeg'; //Need this imported in order to bring logo to life
-import { Link as RouterLink } from 'react-router-dom'; //This must be imported in order to link pages together, otherwise this will not work;
+import { Link as RouterLink, useNavigate } from 'react-router-dom'; 
 import Alert from '@mui/material/Alert';
 import CheckIcon from '@mui/icons-material/Check';
 
@@ -31,6 +31,7 @@ const SignUp = () => {
       .then((userCredential) => {
         console.log(userCredential);
         setSuccess("Login successful!");
+        successfulAuth();
         setError(null); 
       })
       .catch((error) => {
@@ -40,6 +41,11 @@ const SignUp = () => {
       });
   };
 
+  const Navigate = useNavigate();
+
+  const successfulAuth = () => {
+    Navigate('/dashboard')
+  }
   return (
     <ThemeProvider 
     theme={defaultTheme}
@@ -182,10 +188,23 @@ const SignUp = () => {
               {/* I fucking hate the blue shit, its so ugly jesus christ */}
               <Link
                 component={RouterLink}
-                to="/"
+                to="/SignUp"
                 variant="body2"
+                sx={{
+                  margin: '60px'
+                }}
               >
-                {"Have an account? LogIn"}
+                {"Don't have an account? Sign Up"}
+                </Link>
+                <Link
+                component={RouterLink}
+                to="/ResetPassword"
+                variant="body2"
+                sx={{
+                  margin: '80px'
+                }}
+              >
+                {"Forgot your Password?"}
                 </Link>
             </Box>
           </Box>
